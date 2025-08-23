@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Movie Recommender</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        .container { max-width: 600px; margin: auto; }
+        input { padding: 10px; width: 70%; }
+        button { padding: 10px; }
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Movie Recommendation System</h1>
+        <form method="POST">
+            <input type="text" name="movie" placeholder="Enter a movie name" value="{{ query }}">
+            <button type="submit">Search</button>
+        </form>
+
+        {% if matched_title %}
+        <h2>Showing recommendations for: "{{ matched_title }}"</h2>
+        <table>
+            <tr><th>Title</th><th>Genre</th><th>Rating</th></tr>
+            {% for rec in recommendations %}
+            <tr>
+                <td>{{ rec['title'] }}</td>
+                <td>{{ rec['genre'] }}</td>
+                <td>{{ rec['rating'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% elif query %}
+        <p>No match found for "{{ query }}"</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .results {
+            margin-top: 30px;
+        }
+        .matched-title {
+            background: rgba(46, 204, 113, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #2ecc71;
+        }
+        .recommendations {
+            display: grid;
+            gap: 15px;
+        }
+        .movie-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            position: relative;
+        }
+        .movie-poster {
+            flex-shrink: 0;
+        }
+        .movie-info {
+            flex: 1;
+            position: relative;
+        }
+        .movie-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #f39c12;
+        }
+        .movie-genre {
+            color: #bdc3c7;
+            margin-bottom: 5px;
+        }
+        .movie-rating {
+            color: #f1c40f;
+            font-weight: bold;
+        }
+        .movie-description-tooltip {
+            position: absolute;
+            top: 0;
+            left: 400px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            width: 200px;
+            max-width: 90vw;
+            font-size: 13px;
+            line-height: 1.4;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            pointer-events: none;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        .movie-card:hover .movie-description-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            background: rgba(231, 76, 60, 0.2);
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Movie Recommendation System</h1>
+        
+        <form method="POST">
+            <div class="form-group">
+                <label for="movie">Enter a movie title:</label>
+                <input type="text" id="movie" name="movie" value="{{ query }}" placeholder="e.g., The Shawshank Redemption" required>
+            </div>
+            <button type="submit">Get Recommendations</button>
+        </form>
+
+        {% if matched_title %}
+        <div class="results">
+            <div class="matched-title">
+                <strong>Found movie:</strong> {{ matched_title }}
+            </div>
+            
+            <h2>Recommended Movies:</h2>
+            <div class="recommendations">
+                {% for movie in recommendations %}
+                <div class="movie-card">
+                    <img src="{{ movie.poster_url }}" alt="{{ movie.title }} Poster" class="movie-poster" style="width:100px; border-radius:8px;">
+                    <div class="movie-info">
+                        <div class="movie-title">{{ movie.title }}</div>
+                        <div class="movie-genre">{{ movie.genre }}</div>
+                        <div class="movie-rating">Rating: {{ movie.rating }}/10</div>
+                    </div>
+                    {% if movie.description %}
+                    <div class="movie-description-tooltip">
+                        <strong>{{ movie.title }}</strong><br>
+                        {{ movie.description }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% elif query %}
+        <div class="results">
+            <div class="no-results">
+                <strong>No movie found matching "{{ query }}"</strong><br>
+                Try a different title or check the spelling.
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
