@@ -1,0 +1,38 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+*.manifest
+*.spec
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints/
+
+# --- Virtual Environment ---
+venv/
+env/
+.venv/
+ENV/
+
+# --- IDE / Editors ---
+.vscode/
+.idea/
+
+# --- ML / Data files ---
+*.npy
+*.npz
+*.pkl
+*.h5
+*.ckpt
+*.pt
+*.pth
+*.joblib
+
+# --- Logs ---
+*.log
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
